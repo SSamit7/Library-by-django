@@ -1,0 +1,30 @@
+{% extends 'libraryapp/base.html' %}
+
+{% block content %}
+<div style="background: white; padding: 30px; border-radius: 5px;">
+    <h2>{{ book.title }}</h2>
+    <p><strong>Author:</strong> {{ book.author }}</p>
+    <p><strong>ISBN:</strong> {{ book.isbn }}</p>
+    <p><strong>Published:</strong> {{ book.published_date }}</p>
+    <p><strong>Available Copies:</strong> {{ book.copies_available }}</p>
+    
+    {% if book.description %}
+        <p style="margin-top: 20px;"><strong>Description:</strong></p>
+        <p>{{ book.description }}</p>
+    {% endif %}
+    
+    <div style="margin-top: 30px;">
+        {% if user.is_authenticated %}
+            {% if book.copies_available > 0 %}
+                <a href="{% url 'borrow_book' book.pk %}" class="btn">Borrow This Book</a>
+            {% else %}
+                <p style="color: red;">This book is currently unavailable</p>
+            {% endif %}
+        {% else %}
+            <p>Please <a href="{% url 'login' %}">login</a> to borrow this book.</p>
+        {% endif %}
+    </div>
+    
+    <a href="{% url 'book_list' %}" style="display: inline-block; margin-top: 20px;">← Back to all books</a>
+</div>
+{% endblock %}

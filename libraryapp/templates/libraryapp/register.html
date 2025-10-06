@@ -1,0 +1,61 @@
+{% extends 'libraryapp/base.html' %}
+
+{% block content %}
+<div style="max-width: 500px; margin: 50px auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+    <h2 style="text-align: center; margin-bottom: 30px;">Register for Library Account</h2>
+    
+    <form method="post">
+        {% csrf_token %}
+        
+        <div style="margin-bottom: 20px;">
+            <label style="display: block; margin-bottom: 5px; font-weight: bold;">Username:</label>
+            {{ form.username }}
+            {% if form.username.errors %}
+                <p style="color: red; font-size: 14px;">{{ form.username.errors }}</p>
+            {% endif %}
+            <small style="color: #666; display: block; margin-top: 5px;">
+                {{ form.username.help_text }}
+            </small>
+        </div>
+
+        <div style="margin-bottom: 20px;">
+            <label style="display: block; margin-bottom: 5px; font-weight: bold;">Password:</label>
+            {{ form.password1 }}
+            {% if form.password1.errors %}
+                <p style="color: red; font-size: 14px;">{{ form.password1.errors }}</p>
+            {% endif %}
+            <small style="color: #666; display: block; margin-top: 5px;">
+                {{ form.password1.help_text }}
+            </small>
+        </div>
+
+        <div style="margin-bottom: 20px;">
+            <label style="display: block; margin-bottom: 5px; font-weight: bold;">Confirm Password:</label>
+            {{ form.password2 }}
+            {% if form.password2.errors %}
+                <p style="color: red; font-size: 14px;">{{ form.password2.errors }}</p>
+            {% endif %}
+        </div>
+
+        <button type="submit" class="btn" style="width: 100%; padding: 12px;">Register</button>
+    </form>
+
+    <p style="text-align: center; margin-top: 20px;">
+        Already have an account? <a href="{% url 'login' %}">Login here</a>
+    </p>
+</div>
+
+<style>
+    input[type="text"], input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+    input:focus {
+        outline: none;
+        border-color: #007bff;
+    }
+</style>
+{% endblock %}

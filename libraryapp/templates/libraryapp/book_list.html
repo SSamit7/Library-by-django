@@ -1,0 +1,11 @@
+{% extends 'libraryapp/base.html' %}
+{% block content %}
+    <h2>Available Books</h2>
+    {% for book in books %}
+        <div class="book-card">
+            <h3><a href="{% url 'book_detail' book.pk %}">{{ book.title }}</a></h3>
+            <p>Author: {{ book.author }}</p>
+            <p>Available: {{ book.copies_available }}</p>
+        </div>
+    {% endfor %}
+{% endblock %}

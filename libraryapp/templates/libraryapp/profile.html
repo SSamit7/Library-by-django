@@ -1,0 +1,48 @@
+{% extends 'libraryapp/base.html' %}
+
+{% block content %}
+<h2>My Profile</h2>
+
+<div style="background: white; padding: 20px; border-radius: 5px; margin-bottom: 30px;">
+    <h3>Account Information</h3>
+    <p><strong>Username:</strong> {{ user.username }}</p>
+    <p><strong>Email:</strong> {{ user.email|default:"Not provided" }}</p>
+    <p><strong>Member since:</strong> {{ user.date_joined|date:"F d, Y" }}</p>
+</div>
+
+<h3>Currently Borrowed Books ({{ borrowed_books.count }})</h3>
+{% if borrowed_books %}
+    {% for record in borrowed_books %}
+        <div class="book-card">
+            <h4>{{ record.book.title }}</h4>
+            <p><strong>Author:</strong> {{ record.book.author }}</p>
+            <p><strong>Borrowed on:</strong> {{ record.borrow_date|date:"F d, Y" }}</p>
+            <div style="margin-top: 10px;">
+                <a href="{% url 'borrowed_book_detail' record.pk %}" class="btn">View Details</a>
+                <a href="{% url 'book_detail' record.book.pk %}" class="btn" style="background-color: #17a2b8;">Book Info</a>
+            </div>
+        </div>
+    {% endfor %}
+    <a href="{% url 'borrowed_books' %}" class="btn" style="margin-top: 10px;">View All Borrowed Books</a>
+{% else %}
+    <p>You haven't borrowed any books yet.</p>
+    <a href="{% url 'book_list' %}" class="btn">Browse Books</a>
+{% endif %}
+
+<h3 style="margin-top: 30px;">Borrowing History ({{ history.count }})</h3>
+{% if history %}
+    {% for record in history|slice:":5" %}
+        <div class="book-card">
+            <h4>{{ record.book.title }}</h4>
+            <p><strong>Author:</strong> {{ record.book.author }}</p>
+            <p><strong>Borrowed:</strong> {{ record.borrow_date|date:"F d, Y" }}</p>
+            <p><strong>Returned:</strong> {{ record.return_date|date:"F d, Y" }}</p>
+        </div>
+    {% endfor %}
+    {% if history.count > 5 %}
+        <p style="margin-top: 10px; color: #666;">Showing 5 most recent returns out of {{ history.count }} total.</p>
+    {% endif %}
+{% else %}
+    <p>No borrowing history yet.</p>
+{% endif %}
+{% endblock %}

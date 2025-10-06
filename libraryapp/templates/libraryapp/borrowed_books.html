@@ -1,0 +1,42 @@
+{% extends 'libraryapp/base.html' %}
+{% load library_extras %}
+
+{% block content %}
+<h2>My Borrowed Books</h2>
+
+{% if borrowed_books %}
+    <p style="margin-bottom: 20px;">You have {{ borrowed_books.count }} book(s) currently borrowed.</p>
+    
+    {% for record in borrowed_books %}
+        <div class="book-card">
+            <div style="display: flex; justify-content: space-between; align-items: start;">
+                <div style="flex: 1;">
+                    <h3>{{ record.book.title }}</h3>
+                    <p><strong>Author:</strong> {{ record.book.author }}</p>
+                    <p><strong>ISBN:</strong> {{ record.book.isbn }}</p>
+                    <p><strong>Borrowed on:</strong> {{ record.borrow_date|date:"F d, Y" }}</p>
+                    
+                    {% with due_date=record.borrow_date|add_days:14 %}
+                        <p><strong>Due date:</strong> {{ due_date|date:"F d, Y" }}</p>
+                        {% if due_date < today %}
+                            <p style="color: red; font-weight: bold;">⚠️ This book is overdue!</p>
+                        {% endif %}
+                    {% endwith %}
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <a href="{% url 'borrowed_book_detail' record.pk %}" class="btn">View Details</a>
+                    <a href="{% url 'return_book' record.pk %}" class="btn btn-success" 
+                       onclick="return confirm('Are you sure you want to return this book?')">
+                        Return Book
+                    </a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% else %}
+    <div class="book-card">
+        <p>You haven't borrowed any books yet.</p>
+        <a href="{% url 'book_list' %}" class="btn" style="margin-top: 10px;">Browse Books</a>
+    </div>
+{% endif %}
+{% endblock %}

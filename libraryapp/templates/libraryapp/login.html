@@ -1,0 +1,47 @@
+{% extends 'libraryapp/base.html' %}
+
+{% block content %}
+<div style="max-width: 500px; margin: 50px auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+    <h2 style="text-align: center; margin-bottom: 30px;">Login to Library</h2>
+    
+    <form method="post">
+        {% csrf_token %}
+        
+        <div style="margin-bottom: 20px;">
+            <label style="display: block; margin-bottom: 5px; font-weight: bold;">Username:</label>
+            {{ form.username }}
+            {% if form.username.errors %}
+                <p style="color: red; font-size: 14px;">{{ form.username.errors }}</p>
+            {% endif %}
+        </div>
+
+        <div style="margin-bottom: 20px;">
+            <label style="display: block; margin-bottom: 5px; font-weight: bold;">Password:</label>
+            {{ form.password }}
+            {% if form.password.errors %}
+                <p style="color: red; font-size: 14px;">{{ form.password.errors }}</p>
+            {% endif %}
+        </div>
+
+        <button type="submit" class="btn" style="width: 100%; padding: 12px;">Login</button>
+    </form>
+
+    <p style="text-align: center; margin-top: 20px;">
+        Don't have an account? <a href="{% url 'register' %}">Register here</a>
+    </p>
+</div>
+
+<style>
+    input[type="text"], input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+    input:focus {
+        outline: none;
+        border-color: #007bff;
+    }
+</style>
+{% endblock %}
